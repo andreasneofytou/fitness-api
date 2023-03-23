@@ -2,6 +2,7 @@ import { JwtConfig } from '@app/app.config';
 import { RegisterDto } from '@app/auth/dto/register.dto';
 import { TokenPayload } from '@app/auth/dto/token-payload';
 import { LoginProvider } from '@app/common/enums/login-provider';
+import { UserRole } from '@app/users/entities/user.entity';
 import { UsersService } from '@app/users/users.service';
 import {
   Injectable,
@@ -27,7 +28,13 @@ export class AuthService {
   }
 
   async register(registerDto: RegisterDto) {
-    return await this.usersService.create(registerDto);
+    return await this.usersService.create({
+      isVerified: true,
+      isActivated: true,
+      isCompleted: true,
+      roles: [UserRole.client],
+      ...registerDto,
+    });
   }
 
   async login(id: string, loginProvider: LoginProvider = LoginProvider.local) {

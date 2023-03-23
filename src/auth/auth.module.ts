@@ -1,4 +1,6 @@
 import { JwtConfig } from '@app/app.config';
+import { JwtRefreshStrategy } from '@app/auth/strategies/jwt-refresh.strategy';
+import { JwtStrategy } from '@app/auth/strategies/jwt.strategy';
 import { UsersModule } from '@app/users/users.module';
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -23,6 +25,6 @@ import { AuthService } from './auth.service';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, JwtStrategy, JwtRefreshStrategy],
 })
 export class AuthModule {}
