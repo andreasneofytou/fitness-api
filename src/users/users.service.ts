@@ -34,11 +34,15 @@ export class UsersService {
     return this.userModel.findOne(query);
   }
 
-  findByUsername(username: string): Promise<User> {
+  async findByUsername(username: string): Promise<User> {
     const usernameRegex = username.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    return this.userModel.findOne({
+    return await this.userModel.findOne({
       username: { $regex: `^${usernameRegex}$`, $options: 'i' },
     });
+  }
+
+  async findMany(query?: UserQuery): Promise<User[]> {
+    return this.userModel.find(query);
   }
 
   private validateId(id: string) {
@@ -50,6 +54,6 @@ export class UsersService {
 }
 
 export class UserQuery {
-  id: string;
+  id?: string;
   roles?: UserRole[];
 }

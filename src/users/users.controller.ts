@@ -1,6 +1,7 @@
+import { Roles } from '@app/auth/decorators/roles.decorator';
 import { LocalUser } from '@app/auth/dto/local-user';
 import { UserDto } from '@app/users/dto/user.dto';
-import { User } from '@app/users/entities/user.entity';
+import { User, UserRole } from '@app/users/entities/user.entity';
 import { MapInterceptor } from '@automapper/nestjs';
 import {
   Controller,
@@ -20,9 +21,21 @@ export class UsersController {
 
   @UseInterceptors(MapInterceptor(User, UserDto))
   @ApiResponse({ type: UserDto })
-  @Get()
-  async get(@Request() { user: { id } }: { user: LocalUser }) {
+  @Get('/self')
+  async getSelf(@Request() { user: { id } }: { user: LocalUser }) {
     const user = await this.usersService.findOneOrThrow({ id });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return user;
+  }
+
+  @UseInterceptors(MapInterceptor(User, UserDto, { isArray: true }))
+  @ApiResponse({ type: UserDto })
+  @Roles(UserRole.admin)
+  @Get()
+  async get() {
+    const user = await this.usersService.findMany();
     if (!user) {
       throw new NotFoundException('User not found');
     }
