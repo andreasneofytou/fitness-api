@@ -17,6 +17,7 @@ import {
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_FILTER, APP_GUARD, APP_PIPE } from '@nestjs/core';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ExercisesModule } from './exercises/exercises.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     }),
     AuthModule,
     UsersModule,
+    ExercisesModule,
   ],
   providers: [
     {

@@ -34,7 +34,7 @@ export class UsersController {
   @ApiResponse({ type: UserDto })
   @Roles(UserRole.admin)
   @Get()
-  async get() {
+  async getAll() {
     const user = await this.usersService.findMany();
     if (!user) {
       throw new NotFoundException('User not found');
