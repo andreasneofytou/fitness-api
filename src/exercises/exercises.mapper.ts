@@ -1,4 +1,5 @@
 import { ExerciseDto } from '@app/exercises/dto/exercise.dto';
+import { CustomExercise } from '@app/exercises/entities/custom-exercise.entity';
 import { Exercise } from '@app/exercises/entities/exercise.entity';
 import {
   createMap,
@@ -21,6 +22,15 @@ export class ExercisesMapper extends AutomapperProfile {
       createMap(
         mapper,
         Exercise,
+        ExerciseDto,
+        forMember(
+          (dto) => dto.id,
+          mapFrom((entity) => entity['_id']),
+        ),
+      );
+      createMap(
+        mapper,
+        CustomExercise,
         ExerciseDto,
         forMember(
           (dto) => dto.id,

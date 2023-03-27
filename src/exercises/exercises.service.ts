@@ -1,6 +1,10 @@
 import { PaginatedResults } from '@app/common/dto/paginated-results.dto';
 import { ExerciseDto } from '@app/exercises/dto/exercise.dto';
 import {
+  CustomExercise,
+  CustomExerciseDocument,
+} from '@app/exercises/entities/custom-exercise.entity';
+import {
   Exercise,
   ExerciseDocument,
 } from '@app/exercises/entities/exercise.entity';
@@ -17,6 +21,8 @@ export class ExercisesService {
   constructor(
     @InjectModel(Exercise.name)
     private readonly exerciseModel: Model<ExerciseDocument>,
+    @InjectModel(CustomExercise.name)
+    private readonly customExerciseModel: Model<CustomExerciseDocument>,
     private readonly exercisesMapper: ExercisesMapper,
   ) {
     this.logger.log('Initialised');
@@ -26,8 +32,18 @@ export class ExercisesService {
     return await this.exerciseModel.create(createExerciseDto);
   }
 
+  async createCustom(
+    createExerciseDto: CreateExerciseDto,
+  ): Promise<CustomExercise> {
+    return await this.customExerciseModel.create(createExerciseDto);
+  }
+
   async findAll(): Promise<Exercise[]> {
     return await this.exerciseModel.find();
+  }
+
+  async findAllCustom(userId: string): Promise<CustomExercise[]> {
+    return await this.customExerciseModel.find({ authorId: userId });
   }
 
   async findAllPaginated(
@@ -67,6 +83,10 @@ export class ExercisesService {
     return this.exerciseModel.findOne({ _id: id });
   }
 
+  async findOneCustom(id: string): Promise<CustomExercise> {
+    return this.customExerciseModel.findOne({ _id: id });
+  }
+
   async update(
     id: string,
     updateExerciseDto: UpdateExerciseDto,
@@ -74,7 +94,22 @@ export class ExercisesService {
     return this.exerciseModel.findOneAndUpdate({ _id: id }, updateExerciseDto);
   }
 
+  async updateCustom(
+    id: string,
+    authorId: string,
+    updateExerciseDto: UpdateExerciseDto,
+  ): Promise<CustomExercise> {
+    return this.customExerciseModel.findOneAndUpdate(
+      { _id: id },
+      updateExerciseDto,
+    );
+  }
+
   async remove(id: string) {
     return this.exerciseModel.deleteOne({ _id: id });
+  }
+
+  async removeCustom(id: string) {
+    return this.customExerciseModel.deleteOne({ _id: id });
   }
 }

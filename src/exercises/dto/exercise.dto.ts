@@ -9,6 +9,8 @@ import { AutoMap } from '@automapper/classes';
 export class ExerciseDto {
   id: string;
 
+  authorId: string;
+
   @AutoMap()
   name: string;
 

@@ -4,6 +4,8 @@ import {
   FormType,
   MuscleGroup,
 } from '@app/exercises/entities/exercise.entity';
+import { ApiHideProperty } from '@nestjs/swagger';
+import { Exclude } from 'class-transformer';
 import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateExerciseDto {
@@ -22,4 +24,8 @@ export class CreateExerciseDto {
 
   @IsEnum(FormType)
   form: FormType;
+
+  @ApiHideProperty()
+  @Exclude()
+  authorId?: string;
 }

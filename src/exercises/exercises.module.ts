@@ -1,4 +1,8 @@
 import {
+  CustomExercise,
+  CustomExerciseSchema,
+} from '@app/exercises/entities/custom-exercise.entity';
+import {
   Exercise,
   ExerciseSchema,
 } from '@app/exercises/entities/exercise.entity';
@@ -12,6 +16,7 @@ import { ExercisesService } from './exercises.service';
   imports: [
     MongooseModule.forFeature([
       { name: Exercise.name, schema: ExerciseSchema },
+      { name: CustomExercise.name, schema: CustomExerciseSchema },
     ]),
   ],
   controllers: [ExercisesController],
